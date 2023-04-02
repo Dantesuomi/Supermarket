@@ -6,6 +6,7 @@ import DataBase.StringHelpers;
 import Users.Customer;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CustomerMenuController {
 
@@ -52,6 +53,7 @@ public class CustomerMenuController {
                 loginAsCustomer();
             }else {
                 //TODO GENERATE CUSTOMER MENU
+                generateCustomerMenu(loggedInUser);
             }
         }
     }
@@ -93,5 +95,27 @@ public class CustomerMenuController {
 
         }
         return null; // if registration is cancelled
+    }
+
+    private static void generateCustomerMenu(Customer customer){
+        JFrame frame = new JFrame("Account");
+
+        JButton buyProductButton = new JButton("Buy Product");
+        JButton purchaseHistoryButton = new JButton("Purchase history");
+        JButton addFundsButton = new JButton("Add funds");
+        JButton logOutButton = new JButton("Log out");
+
+        frame.setSize(400,200);
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        JLabel customerName = new JLabel("Welcome: " + customer.getName());
+        JLabel currentBalance = new JLabel("Your current balance is: " + customer.getBalance() + "€");
+        panel.add(customerName);
+        panel.add(currentBalance);
+        panel.add(buyProductButton);
+        panel.add(purchaseHistoryButton);
+        panel.add(addFundsButton);
+        panel.add(logOutButton);
+        frame.add(panel);
+        frame.setVisible(true);
     }
 }
