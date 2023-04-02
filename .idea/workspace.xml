@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e014c1ca-9528-4cf2-ad72-0e8040acb694" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DataBase/StringHelpers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Instructions.MD" beforeDir="false" afterPath="$PROJECT_DIR$/Instructions.MD" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/OpenController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Users/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Users/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Users/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Users/Customer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,18 +68,10 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java</url>
-          <line>20</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="javax.swing.JOptionPane" memberName="messageType" />
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
       </pinned-members>
     </pin-to-top-manager>
   </component>

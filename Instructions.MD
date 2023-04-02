@@ -8,12 +8,14 @@
 //	- buy product (1. search by name, type quantity 2.balance reduces, add an if “insufficient balance”)
 //	- show purchase history
 //	- show balance
+//  - add balance
 
 //2.2 MenuController FOR SALESMANAGER :
 //	- register new user (name, email, password, supermarketBalance)
 //	- log in
 //	- log out
 //	- add product to store
+//  - add balance
 //	- show selling history (how much has been sold(???) and the history of sales)
 //	- show profit and lost statement (financial report)
 

@@ -16,6 +16,7 @@ public class MainMenuController {
                 mainMenuOptions,  //the titles of buttons
                 mainMenuOptions[0]); //default button title
         if(result == JOptionPane.OK_OPTION){
+            CustomerMenuController.loginAsCustomer();
 
         }
         else {

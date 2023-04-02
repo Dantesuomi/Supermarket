@@ -4,14 +4,17 @@ public class Customer {
 
     private String name;
     private String email;
-    private String password;
+    private String passwordHash;
     private Double balance;
 
-    public Customer(String name, String email, String password, Double balance) {
+    public Customer(String name, String email, String passwordHash, Double balance) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.balance = balance;
+    }
+
+    public Customer() {
     }
 
     public String getName() {
@@ -30,12 +33,13 @@ public class Customer {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
     public Double getBalance() {
@@ -51,8 +55,9 @@ public class Customer {
         return "Customer{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", password='" + passwordHash + '\'' +
                 ", balance=" + balance +
                 '}';
     }
+
 }
