@@ -16,6 +16,12 @@ public class Product {
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
     }
+    public Product(){
+        
+    }
+
+    public Product(String text, String text1) {
+    }
 
     public String getName() {
         return name;

@@ -1,6 +1,7 @@
 package DataBase;
 
 import Users.Customer;
+import Users.Product;
 
 import java.sql.*;
 
@@ -8,7 +9,7 @@ public class DataBase {
     public static Connection getConnection() throws SQLException {
         String dbURL = "jdbc:mysql://localhost:3306/Supermarket";
         String username = "root";
-        String password = "12345"; //0865
+        String password = "0865"; //0865 //12345
         return DriverManager.getConnection(dbURL, username, password);
     }
 
@@ -61,4 +62,6 @@ public class DataBase {
         }
 
     }
+
+
 }

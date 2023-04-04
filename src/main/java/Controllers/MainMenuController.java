@@ -3,7 +3,7 @@ package Controllers;
 import javax.swing.*;
 
 public class MainMenuController {
-    public void start(){
+    public static void start(){
         Object[] mainMenuOptions = {"Customer", "Sales Manager"};
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMinimumSize(new java.awt.Dimension(300, 300));

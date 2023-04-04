@@ -2,9 +2,9 @@
 //1. Main
 //2.0 MenuController Open (choose option: customer or sales manager)
 //2.1 MenuController FOR CUSTOMER :
-//	- register new user (name, email, password, balance)
-//	- log in
-//	- log out
+//	- register new user (name, email, password, balance) +
+//	- log in +
+//	- log out +J
 //	- buy product (1. search by name, type quantity 2.balance reduces, add an if “insufficient balance”)
 //	- show purchase history
 //	- show balance
