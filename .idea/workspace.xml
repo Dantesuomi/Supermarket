@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e014c1ca-9528-4cf2-ad72-0e8040acb694" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" afterDir="false" />
+>>>>>>> 1bc0062ba815c41baa5b01b154a4b3aadd445445
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,5 +63,13 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="javax.swing.JOptionPane" memberName="messageType" />
+        <PinnedItemInfo parentTag="java.lang.String" memberName="value" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
 </project>

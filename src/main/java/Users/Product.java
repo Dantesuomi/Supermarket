@@ -4,14 +4,14 @@ public class Product {
     //total quantity(weight or number, reduces when product is bought),
 
     private String name;
-    private Double totalQuantity;
+    private Double availableQuantity;
     private Double itemQuantity;
     private Double purchasePrice;
     private Double sellingPrice;
 
     public Product(String name, Double totalQuantity, Double itemQuantity, Double purchasePrice, Double sellingPrice) {
         this.name = name;
-        this.totalQuantity = totalQuantity;
+        this.availableQuantity = totalQuantity;
         this.itemQuantity = itemQuantity;
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
@@ -25,12 +25,12 @@ public class Product {
         this.name = name;
     }
 
-    public Double getTotalQuantity() {
-        return totalQuantity;
+    public Double getAvailableQuantity() {
+        return availableQuantity;
     }
 
-    public void setTotalQuantity(Double totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setAvailableQuantity(Double availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
     public Double getItemQuantity() {
@@ -61,7 +61,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
-                ", totalQuantity=" + totalQuantity +
+                ", totalQuantity=" + availableQuantity +
                 ", itemQuantity=" + itemQuantity +
                 ", purchasePrice=" + purchasePrice +
                 ", sellingPrice=" + sellingPrice +
