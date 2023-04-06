@@ -7,6 +7,8 @@ public class Customer {
     private String passwordHash;
     private Double balance;
 
+
+
     public Customer(String name, String email, String passwordHash, Double balance) {
         this.name = name;
         this.email = email;

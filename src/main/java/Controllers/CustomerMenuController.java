@@ -7,9 +7,16 @@ import Users.Customer;
 import Users.Product;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
+
+
 
 public class CustomerMenuController {
 
@@ -121,6 +128,10 @@ public class CustomerMenuController {
         frame.add(panel);
         frame.setVisible(true);
 
+        addFundsButton.addActionListener(e -> {
+            addFunds(customer, currentBalance);
+        });
+
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,10 +147,23 @@ public class CustomerMenuController {
         buyProductButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // code for logout functionality
                 buyProduct();
                 }
             });
+
+        purchaseHistoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showPurchaseList();
+            }
+        });
+
+        addFundsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addFunds(customer, currentBalance);
+            }
+        });
 
 
     }
@@ -170,6 +194,67 @@ public class CustomerMenuController {
 
            // JOptionPane.showMessageDialog(null, panel, "Search results", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    private static void showPurchaseList() {
+        ArrayList<Product> products = DataBase.getPurchasedProducts();
+        JPanel panel = generateProductPanel(products);
+
+        JOptionPane.showMessageDialog(null, panel, "Your purchase history", JOptionPane.INFORMATION_MESSAGE);
 
     }
+
+    private static JPanel generateProductPanel(ArrayList<Product> products){
+
+        Vector<Vector<String>> dataVector = new Vector<>();
+        for (Product product : products) {
+            Vector<String> rowVector = new Vector<>();
+            rowVector.add(product.getName());
+            rowVector.add(product.getItemQuantity().toString());
+            dataVector.add(rowVector);
+        }
+            Vector<String> columnNamesVector = new Vector<>();
+            columnNamesVector.add("Product id");
+            columnNamesVector.add("Quantity");
+
+            DefaultTableModel tableModel = new DefaultTableModel(dataVector, columnNamesVector);
+            JTable table = new JTable(tableModel);
+            JPanel panel = new JPanel();
+            panel.add(new JScrollPane(table));
+            return panel;
+        }
+
+    public static void addFunds(Customer customer, JLabel currentBalanceLabel) {
+
+        JFrame addFundsFrame = new JFrame("Add funds");
+        addFundsFrame.setSize(300, 100);
+
+        JLabel label = new JLabel("Enter amount to add:");
+        JTextField textField = new JTextField(10);
+        JButton addButton = new JButton("Add");
+
+        JPanel panel = new JPanel(new GridLayout(2, 3));
+        panel.add(label);
+        panel.add(textField);
+        panel.add(addButton);
+
+        addFundsFrame.add(panel);
+        addFundsFrame.setVisible(true);
+
+        addButton.addActionListener(e -> {
+            Double amount = Double.parseDouble(textField.getText());
+            try {
+                DataBase.updateBalance(amount, customer.getEmail());
+                customer.setBalance(customer.getBalance() + amount);
+                currentBalanceLabel.setText("Your current balance is: " + customer.getBalance() + " €");
+                JOptionPane.showMessageDialog(addFundsFrame, "Funds added successfully.");
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(addFundsFrame, "Failed to add funds: " + exception.getMessage());
+            }
+            addFundsFrame.dispose();
+        });
+
+    }
+
 }
+

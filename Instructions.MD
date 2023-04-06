@@ -6,9 +6,9 @@
 //	- log in +
 //	- log out +J
 //	- buy product (1. search by name, type quantity 2.balance reduces, add an if “insufficient balance”)
-//	- show purchase history
-//	- show balance
-//  - add balance
+//	- show purchase history +-J needs attention
+//	- show balance + implemented with Jlabel
+//  - add balance +J 
 
 //2.2 MenuController FOR SALESMANAGER :
 //	- register new user (name, email, password, supermarketBalance)

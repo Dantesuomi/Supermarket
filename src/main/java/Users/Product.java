@@ -16,7 +16,7 @@ public class Product {
         this.purchasePrice = purchasePrice;
         this.sellingPrice = sellingPrice;
     }
-    public Product(){
+    public Product(int product_id, double amount_sold){
         
     }
 
