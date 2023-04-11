@@ -11,8 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -45,10 +43,19 @@ public class CustomerMenuController {
         if (result == JOptionPane.OK_OPTION) {
             String password = new String(passwordField.getPassword());
             loginAsCustomerValidation(emailField.getText(), password);
-        } else {
-            registerNewCustomer();
         }
-
+        else if (result == JOptionPane.NO_OPTION) {
+            Customer registeredCustomer = registerNewCustomer();
+            if (registeredCustomer != null) {
+                generateCustomerMenu(registeredCustomer);
+            }
+            else {
+                MainMenuController.start();
+            }
+        }
+        else {
+            MainMenuController.start();
+        }
     }
 
     private static void loginAsCustomerValidation(String email, String password) {
@@ -132,6 +139,14 @@ public class CustomerMenuController {
             addFunds(customer, currentBalance);
         });
 
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+               frame.dispose();
+               System.exit(0);
+            }
+        });
+
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -187,7 +202,7 @@ public class CustomerMenuController {
         int result = JOptionPane.showConfirmDialog(null, myPanel,
                 "Please enter contact details", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            Product saveProductToDatabase = new Product(ProductNameField.getText(), quantityNumberField.getText());
+            //Product saveProductToDatabase = new Product(ProductNameField.getText(), quantityNumberField.getText());
 
             //ArrayList<Product> products = DataBase.findContacts(lookupContact);
             //JPanel panel = generateContactPanel(products);
@@ -210,7 +225,7 @@ public class CustomerMenuController {
         for (Product product : products) {
             Vector<String> rowVector = new Vector<>();
             rowVector.add(product.getName());
-            rowVector.add(product.getItemQuantity().toString());
+            rowVector.add(product.getUnitSize().toString());
             dataVector.add(rowVector);
         }
             Vector<String> columnNamesVector = new Vector<>();
@@ -244,7 +259,7 @@ public class CustomerMenuController {
         addButton.addActionListener(e -> {
             Double amount = Double.parseDouble(textField.getText());
             try {
-                DataBase.updateBalance(amount, customer.getEmail());
+                DataBase.updateCustomerBalance(amount, customer.getEmail());
                 customer.setBalance(customer.getBalance() + amount);
                 currentBalanceLabel.setText("Your current balance is: " + customer.getBalance() + " €");
                 JOptionPane.showMessageDialog(addFundsFrame, "Funds added successfully.");

@@ -4,14 +4,17 @@ public class SalesManager {
 
     private String name;
     private String email;
-    private String password;
+    private String passwordHash;
     private Double shopBalance;
 
-    public SalesManager(String name, String email, String password, Double shopBalance) {
+    public SalesManager(String name, String email, String passwordHash, Double shopBalance) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
         this.shopBalance = shopBalance;
+    }
+
+    public SalesManager() {
     }
 
     public String getName() {
@@ -30,12 +33,12 @@ public class SalesManager {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String PasswordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public Double getShopBalance() {
@@ -46,13 +49,4 @@ public class SalesManager {
         this.shopBalance = shopBalance;
     }
 
-    @Override
-    public String toString() {
-        return "SalesManager{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", shopBalance=" + shopBalance +
-                '}';
-    }
 }

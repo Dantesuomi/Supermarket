@@ -52,14 +52,4 @@ public class Customer {
         this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + passwordHash + '\'' +
-                ", balance=" + balance +
-                '}';
-    }
-
 }

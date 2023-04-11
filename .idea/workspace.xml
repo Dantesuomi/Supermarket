@@ -7,10 +7,14 @@
     <list default="true" id="e014c1ca-9528-4cf2-ad72-0e8040acb694" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Instructions.MD" beforeDir="false" afterPath="$PROJECT_DIR$/Instructions.MD" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/supermarket.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/supermarket.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/CustomerMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/MainMenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controllers/SalesManagerMenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controllers/SalesManagerMenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DataBase/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase/DataBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Users/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Users/Customer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Users/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Users/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Users/SalesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Users/SalesManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,13 +40,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-    &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
-    }
-    }</component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -66,6 +73,15 @@
     </option>
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/DataBase/DataBase.java</url>
+          <line>250</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="javax.swing.JOptionPane" memberName="messageType" />

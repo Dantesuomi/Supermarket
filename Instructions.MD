@@ -11,13 +11,13 @@
 //  - add balance +J 
 
 //2.2 MenuController FOR SALESMANAGER :
-//	- register new user (name, email, password, supermarketBalance)
-//	- log in
-//	- log out
+//	- register new user (name, email, password, shopBalance) +
+//	- log in +
+//	- log out +
 //	- add product to store
-//  - add balance
+//  - add balance +
 //	- show selling history (how much has been sold(???) and the history of sales)
-//	- show profit and lost statement (financial report)
+//	- show profit and loss statement (financial report)
 
 //3. Class Product(name, total quantity(weight or number, reduces when product is bought) -->
 //	 --> item quantity (weight per 1 item/1 solid item), purchase price(for the store), selling price (for customer)), add an if (“item is sold out”)

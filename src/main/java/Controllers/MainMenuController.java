@@ -19,8 +19,11 @@ public class MainMenuController {
             CustomerMenuController.loginAsCustomer();
 
         }
+        else if(result == JOptionPane.NO_OPTION){
+            SalesManagerMenuController.loginAsSalesManager();
+        }
         else {
-
+            System.exit(0);
         }
     }
 }

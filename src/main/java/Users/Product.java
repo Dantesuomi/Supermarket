@@ -5,22 +5,22 @@ public class Product {
 
     private String name;
     private Double availableQuantity;
-    private Double itemQuantity;
+    private Double unitSize;
     private Double purchasePrice;
-    private Double sellingPrice;
+    private Double retailPrice;
 
-    public Product(String name, Double totalQuantity, Double itemQuantity, Double purchasePrice, Double sellingPrice) {
+    public Product(String name, Double totalQuantity, Double unitSize, Double purchasePrice, Double retailPrice) {
         this.name = name;
         this.availableQuantity = totalQuantity;
-        this.itemQuantity = itemQuantity;
+        this.unitSize = unitSize;
         this.purchasePrice = purchasePrice;
-        this.sellingPrice = sellingPrice;
+        this.retailPrice = retailPrice;
     }
     public Product(int product_id, double amount_sold){
         
     }
 
-    public Product(String text, String text1) {
+    public Product() {
     }
 
     public String getName() {
@@ -39,12 +39,12 @@ public class Product {
         this.availableQuantity = availableQuantity;
     }
 
-    public Double getItemQuantity() {
-        return itemQuantity;
+    public Double getUnitSize() {
+        return unitSize;
     }
 
-    public void setItemQuantity(Double itemQuantity) {
-        this.itemQuantity = itemQuantity;
+    public void setUnitSize(Double unitSize) {
+        this.unitSize = unitSize;
     }
 
     public Double getPurchasePrice() {
@@ -55,22 +55,11 @@ public class Product {
         this.purchasePrice = purchasePrice;
     }
 
-    public Double getSellingPrice() {
-        return sellingPrice;
+    public Double getRetailPrice() {
+        return retailPrice;
     }
 
-    public void setSellingPrice(Double sellingPrice) {
-        this.sellingPrice = sellingPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", totalQuantity=" + availableQuantity +
-                ", itemQuantity=" + itemQuantity +
-                ", purchasePrice=" + purchasePrice +
-                ", sellingPrice=" + sellingPrice +
-                '}';
+    public void setRetailPrice(Double retailPrice) {
+        this.retailPrice = retailPrice;
     }
 }
