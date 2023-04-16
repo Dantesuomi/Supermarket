@@ -4,12 +4,16 @@ import DataBase.DataBase;
 import DataBase.Sha256;
 import DataBase.StringHelpers;
 import Users.Product;
+import Users.PurchaseHistory;
 import Users.SalesManager;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class SalesManagerMenuController {
     public static void loginAsSalesManager() {
@@ -75,8 +79,6 @@ public class SalesManagerMenuController {
         JButton purchaseHistoryButton = new JButton("Sales history");
         JButton addFundsButton = new JButton("Add funds");
         JButton logOutButton = new JButton("Log out");
-        JButton profitLossStatement = new JButton("Profit and loss statement");
-
 
         frame.setSize(400, 200);
         JPanel panel = new JPanel(new GridLayout(4, 2));
@@ -88,7 +90,6 @@ public class SalesManagerMenuController {
         panel.add(purchaseHistoryButton);
         panel.add(addFundsButton);
         panel.add(logOutButton);
-        panel.add(profitLossStatement);
         frame.add(panel);
         frame.setVisible(true);
 
@@ -106,6 +107,10 @@ public class SalesManagerMenuController {
 
         addProductButton.addActionListener(e -> {
             addProduct(salesManager, currentBalance);
+        });
+
+        purchaseHistoryButton.addActionListener(e -> {
+            showSalesList();
         });
 
         logOutButton.addActionListener(new ActionListener() {
@@ -184,8 +189,8 @@ public class SalesManagerMenuController {
             double amount = Double.parseDouble(textField.getText());
             try {
                 double newBalance = amount + salesManager.getShopBalance();
-                DataBase.updateBalance(newBalance, salesManager.getEmail());
-                salesManager.setShopBalance(salesManager.getShopBalance() + amount);
+                DataBase.updateSalesManagerBalance(newBalance, salesManager.getEmail());
+                salesManager.setShopBalance(newBalance);
                 currentBalanceLabel.setText("Your current balance is: " + salesManager.getShopBalance() + " €");
                 JOptionPane.showMessageDialog(addFundsFrame, "Funds added successfully.");
             } catch (Exception exception) {
@@ -258,9 +263,52 @@ public class SalesManagerMenuController {
             }
             double productPurchasePrice = product.getPurchasePrice() * product.getAvailableQuantity();
             double newBalance = salesManager.getShopBalance() - productPurchasePrice;
-            DataBase.updateBalance(newBalance, salesManager.getEmail());
+            DataBase.updateSalesManagerBalance(newBalance, salesManager.getEmail());
             currentBalanceLabel.setText("Your current balance is: " + newBalance + " €");
             JOptionPane.showMessageDialog(null, "Product Added successfully!");
         }
+    }
+
+    private static void showSalesList() {
+        ArrayList<PurchaseHistory> purchaseHistory = DataBase.getPurchasedProducts();
+        JPanel panel = generateSalesHistoryPanel(purchaseHistory);
+
+        JOptionPane.showMessageDialog(null, panel, "Shop purchase history", JOptionPane.INFORMATION_MESSAGE);
+
+    }
+
+    private static JPanel generateSalesHistoryPanel(ArrayList<PurchaseHistory> purchaseHistory){
+        double totalProfit = 0;
+        Vector<Vector<String>> dataVector = new Vector<>();
+        for (PurchaseHistory item : purchaseHistory) {
+            Vector<String> rowVector = new Vector<>();
+            rowVector.add(item.getProductName());
+            rowVector.add(Double.toString(item.getAmountSold()));
+            rowVector.add(Double.toString(item.getRetailPrice()));
+            rowVector.add(Double.toString(item.getPurchasePrice()));
+            rowVector.add(Double.toString(item.getTotal()));
+            double shopPrice = item.getAmountSold() * item.getPurchasePrice();
+            double customerPrice = item.getAmountSold() * item.getRetailPrice();
+            double netProfit = Math.round((customerPrice - shopPrice) * 100.0) / 100.0;
+            totalProfit += netProfit;
+            rowVector.add(Double.toString(netProfit));
+            dataVector.add(rowVector);
+        }
+        Vector<String> columnNamesVector = new Vector<>();
+        columnNamesVector.add("Product name");
+        columnNamesVector.add("Amount purchased");
+        columnNamesVector.add("Single item price");
+        columnNamesVector.add("Shop price");
+        columnNamesVector.add("Total price");
+        columnNamesVector.add("Net profit");
+
+        JLabel totalProfitLabel = new JLabel("Total profit: " + totalProfit + "€");
+
+        DefaultTableModel tableModel = new DefaultTableModel(dataVector, columnNamesVector);
+        JTable table = new JTable(tableModel);
+        JPanel panel = new JPanel();
+        panel.add(new JScrollPane(table));
+        panel.add(totalProfitLabel);
+        return panel;
     }
 }

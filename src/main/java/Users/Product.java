@@ -23,6 +23,14 @@ public class Product {
     public Product() {
     }
 
+    public Product( Product product){
+        this.name = product.name;
+        this.availableQuantity = product.availableQuantity;
+        this.unitSize = product.unitSize;
+        this.purchasePrice = product.purchasePrice;
+        this.retailPrice = product.retailPrice;
+    }
+
     public String getName() {
         return name;
     }
@@ -61,5 +69,10 @@ public class Product {
 
     public void setRetailPrice(Double retailPrice) {
         this.retailPrice = retailPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Product: " + this.getName() + ", price: " + this.getRetailPrice() + ", available amount: " + this.getAvailableQuantity();
     }
 }

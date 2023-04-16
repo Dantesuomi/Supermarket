@@ -5,6 +5,7 @@ import DataBase.Sha256;
 import DataBase.StringHelpers;
 import Users.Customer;
 import Users.Product;
+import Users.PurchaseHistory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -135,10 +136,6 @@ public class CustomerMenuController {
         frame.add(panel);
         frame.setVisible(true);
 
-        addFundsButton.addActionListener(e -> {
-            addFunds(customer, currentBalance);
-        });
-
         frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -162,14 +159,14 @@ public class CustomerMenuController {
         buyProductButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buyProduct();
+                buyProduct(customer, currentBalance);
                 }
             });
 
         purchaseHistoryButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showPurchaseList();
+                showPurchaseList(customer.getEmail());
             }
         });
 
@@ -183,54 +180,82 @@ public class CustomerMenuController {
 
     }
 
-    private static void buyProduct() {
-
-        JFrame frame = new JFrame("What do you want to buy?");
-
-        JTextField ProductNameField = new JTextField(10);
-        JTextField quantityNumberField = new JTextField(10);
-
-        frame.setSize(400, 200);
+    private static void buyProduct(Customer customer, JLabel currentBalanceLabel) {
+        ArrayList<Product> productList = DataBase.getAllAvailableProducts();
+        Product[] products = productList.toArray(new Product[productList.size()]);
 
         JPanel myPanel = new JPanel();
-        myPanel.add(new JLabel("Please, enter name of product: "));
-        myPanel.add(ProductNameField);
+        myPanel.add(new JLabel("Select product to buy: "));
+        JComboBox<Product> productBox = new JComboBox<>(products);
+        myPanel.add(productBox);
+
+        JTextField productAmountField = new JTextField(10);
+        myPanel.add(new JLabel("Please, enter amount of product: "));
+        myPanel.add(productAmountField);
         myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-        myPanel.add(new JLabel("Enter quantity: "));
-        myPanel.add(quantityNumberField);
+
 
         int result = JOptionPane.showConfirmDialog(null, myPanel,
-                "Please enter contact details", JOptionPane.OK_CANCEL_OPTION);
+                "Please select product to buy and amount", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            //Product saveProductToDatabase = new Product(ProductNameField.getText(), quantityNumberField.getText());
-
-            //ArrayList<Product> products = DataBase.findContacts(lookupContact);
-            //JPanel panel = generateContactPanel(products);
-
-           // JOptionPane.showMessageDialog(null, panel, "Search results", JOptionPane.INFORMATION_MESSAGE);
+            Product selectedProduct = (Product) productBox.getSelectedItem();
+            Double amount = Double.parseDouble(productAmountField.getText());
+            if(selectedProduct.getAvailableQuantity() < amount){
+                JOptionPane.showMessageDialog(null, "Sorry, this amount of product is not available!");
+            } else if (amount * selectedProduct.getRetailPrice() > customer.getBalance()) {
+                JOptionPane.showMessageDialog(null, "Insufficient balance to buy!");
+            }
+            else {
+                processPurchase(selectedProduct, customer, amount, currentBalanceLabel);
+            }
         }
     }
 
-    private static void showPurchaseList() {
-        ArrayList<Product> products = DataBase.getPurchasedProducts();
-        JPanel panel = generateProductPanel(products);
+    private static void processPurchase(Product selectedProduct, Customer customer, Double amount, JLabel currentBalanceLabel) {
+        PurchaseHistory purchaseHistory = new PurchaseHistory();
+        purchaseHistory.setCustomerEmail(customer.getEmail());
+        purchaseHistory.setProductName(selectedProduct.getName());
+        purchaseHistory.setAmountSold(amount);
+        purchaseHistory.setPurchasePrice(selectedProduct.getPurchasePrice());
+        purchaseHistory.setRetailPrice(selectedProduct.getRetailPrice());
+        purchaseHistory.setTotal(selectedProduct.getRetailPrice() * amount);
+
+        DataBase.recordPurchase(purchaseHistory);
+
+        Product updatedProduct = new Product(selectedProduct);
+        updatedProduct.setAvailableQuantity(selectedProduct.getAvailableQuantity() - amount);
+        DataBase.updateProduct(updatedProduct);
+
+        double productPurchasePrice = selectedProduct.getRetailPrice() * amount;
+        double newBalance = customer.getBalance() - productPurchasePrice;
+        currentBalanceLabel.setText("Your current balance is: " + newBalance + " €");
+        DataBase.updateCustomerBalance(newBalance, customer.getEmail());
+    }
+
+    private static void showPurchaseList(String customerEmail) {
+        ArrayList<PurchaseHistory> purchaseHistory = DataBase.getPurchasedProducts(customerEmail);
+        JPanel panel = generateProductPanel(purchaseHistory);
 
         JOptionPane.showMessageDialog(null, panel, "Your purchase history", JOptionPane.INFORMATION_MESSAGE);
 
     }
 
-    private static JPanel generateProductPanel(ArrayList<Product> products){
+    private static JPanel generateProductPanel(ArrayList<PurchaseHistory> purchaseHistory){
 
         Vector<Vector<String>> dataVector = new Vector<>();
-        for (Product product : products) {
+        for (PurchaseHistory item : purchaseHistory) {
             Vector<String> rowVector = new Vector<>();
-            rowVector.add(product.getName());
-            rowVector.add(product.getUnitSize().toString());
+            rowVector.add(item.getProductName());
+            rowVector.add(Double.toString(item.getAmountSold()));
+            rowVector.add(Double.toString(item.getRetailPrice()));
+            rowVector.add(Double.toString(item.getTotal()));
             dataVector.add(rowVector);
         }
             Vector<String> columnNamesVector = new Vector<>();
-            columnNamesVector.add("Product id");
-            columnNamesVector.add("Quantity");
+            columnNamesVector.add("Product name");
+            columnNamesVector.add("Amount purchased");
+            columnNamesVector.add("Single item price");
+            columnNamesVector.add("Total price");
 
             DefaultTableModel tableModel = new DefaultTableModel(dataVector, columnNamesVector);
             JTable table = new JTable(tableModel);
@@ -259,8 +284,9 @@ public class CustomerMenuController {
         addButton.addActionListener(e -> {
             Double amount = Double.parseDouble(textField.getText());
             try {
-                DataBase.updateCustomerBalance(amount, customer.getEmail());
-                customer.setBalance(customer.getBalance() + amount);
+                double newBalance = amount + customer.getBalance();
+                DataBase.updateCustomerBalance(newBalance, customer.getEmail());
+                customer.setBalance(newBalance);
                 currentBalanceLabel.setText("Your current balance is: " + customer.getBalance() + " €");
                 JOptionPane.showMessageDialog(addFundsFrame, "Funds added successfully.");
             } catch (Exception exception) {

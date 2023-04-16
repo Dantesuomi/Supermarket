@@ -2,6 +2,7 @@ package DataBase;
 
 import Users.Customer;
 import Users.Product;
+import Users.PurchaseHistory;
 import Users.SalesManager;
 
 import java.sql.*;
@@ -11,7 +12,7 @@ public class DataBase {
     public static Connection getConnection() throws SQLException {
         String dbURL = "jdbc:mysql://localhost:3306/Supermarket";
         String username = "root";
-        String password = "0865"; //0865 //12345
+        String password = "12345"; //0865 //12345
         return DriverManager.getConnection(dbURL, username, password);
     }
 
@@ -65,20 +66,53 @@ public class DataBase {
     }
 
 
-    public static ArrayList<Product> getPurchasedProducts() {
+    public static ArrayList<PurchaseHistory> getPurchasedProducts(String customerEmail) {
         try {
-            String sql = "SELECT product_id, amount_sold  FROM purchase_history";
             Connection dbConnection = DataBase.getConnection();
-            Statement statement = dbConnection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+            PreparedStatement getIdStatement = dbConnection.prepareStatement("SELECT customer_email, product_name, amount_sold, purchase_price, retail_price, total FROM purchase_history WHERE customer_email = ?");
+            getIdStatement.setString(1, customerEmail);
+            ResultSet resultSet = getIdStatement.executeQuery();
 
-            ArrayList<Product> contacts = new ArrayList<>();
+            ArrayList<PurchaseHistory> purchaseHistory = new ArrayList<>();
 
             while (resultSet.next()) {
-                Product dbProduct = new Product(resultSet.getInt("product_id"), resultSet.getDouble("amount_sold"));
-                contacts.add(dbProduct);
+                PurchaseHistory purchasedProduct = new PurchaseHistory();
+                purchasedProduct.setCustomerEmail(resultSet.getString("customer_email"));
+                purchasedProduct.setProductName(resultSet.getString("product_name"));
+                purchasedProduct.setAmountSold(resultSet.getDouble("amount_sold"));
+                purchasedProduct.setPurchasePrice(resultSet.getDouble("purchase_price"));
+                purchasedProduct.setRetailPrice(resultSet.getDouble("retail_price"));
+                purchasedProduct.setTotal(resultSet.getDouble("total"));
+
+                purchaseHistory.add(purchasedProduct);
             }
-            return contacts;
+            return purchaseHistory;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ArrayList<PurchaseHistory> getPurchasedProducts() {
+        try {
+            Connection dbConnection = DataBase.getConnection();
+            PreparedStatement getIdStatement = dbConnection.prepareStatement("SELECT customer_email, product_name, amount_sold, purchase_price, retail_price, total FROM purchase_history");
+            ResultSet resultSet = getIdStatement.executeQuery();
+
+            ArrayList<PurchaseHistory> purchaseHistory = new ArrayList<>();
+
+            while (resultSet.next()) {
+                PurchaseHistory purchasedProduct = new PurchaseHistory();
+                purchasedProduct.setCustomerEmail(resultSet.getString("customer_email"));
+                purchasedProduct.setProductName(resultSet.getString("product_name"));
+                purchasedProduct.setAmountSold(resultSet.getDouble("amount_sold"));
+                purchasedProduct.setPurchasePrice(resultSet.getDouble("purchase_price"));
+                purchasedProduct.setRetailPrice(resultSet.getDouble("retail_price"));
+                purchasedProduct.setTotal(resultSet.getDouble("total"));
+
+                purchaseHistory.add(purchasedProduct);
+            }
+            return purchaseHistory;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -98,7 +132,7 @@ public class DataBase {
                 int customerId = idResult.getInt("id");
 
                 // update the balance of the customer with the retrieved id
-                PreparedStatement updateBalanceStatement = dbConnection.prepareStatement("UPDATE customers SET balance = balance + ? WHERE id = ?");
+                PreparedStatement updateBalanceStatement = dbConnection.prepareStatement("UPDATE customers SET balance = ? WHERE id = ?");
                 updateBalanceStatement.setDouble(1, newBalance);
                 updateBalanceStatement.setInt(2, customerId);
                 int rowsUpdated = updateBalanceStatement.executeUpdate();
@@ -114,13 +148,13 @@ public class DataBase {
         }
     }
 
-    public static void updateBalance(Double newBalance, String customerEmail) {
+    public static void updateSalesManagerBalance(Double newBalance, String salesManagerEmail) {
         try {
             Connection dbConnection = getConnection();
 
             // retrieve the id of the customer with the given email
             PreparedStatement getIdStatement = dbConnection.prepareStatement("SELECT id FROM sales_managers WHERE email = ?");
-            getIdStatement.setString(1, customerEmail);
+            getIdStatement.setString(1, salesManagerEmail);
             ResultSet idResult = getIdStatement.executeQuery();
 
             if (idResult.next()) {
@@ -133,16 +167,15 @@ public class DataBase {
                 int rowsUpdated = updateBalanceStatement.executeUpdate();
 
                 if (rowsUpdated != 1) {
-                    throw new SQLException("Failed to update balance for sales manager with email " + customerEmail);
+                    throw new SQLException("Failed to update balance for sales manager with email " + salesManagerEmail);
                 }
             } else {
-                throw new SQLException("No customer found with email " + customerEmail);
+                throw new SQLException("No sales manager found with email " + salesManagerEmail);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
     public static SalesManager loginAsSalesManager(String email, String passwordHash) {
 
@@ -261,6 +294,57 @@ public class DataBase {
             e.printStackTrace();
         }
 
+    }
+
+    public static ArrayList<Product> getAllAvailableProducts() {
+        try {
+            String sql = "SELECT * FROM  products WHERE available_quantity > 0";
+
+            Connection dbConnection = getConnection();
+
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            ArrayList<Product> availableProducts = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setName(resultSet.getString("name"));
+                product.setAvailableQuantity(resultSet.getDouble("available_quantity"));
+                product.setUnitSize(resultSet.getDouble("unit_size"));
+                product.setPurchasePrice(resultSet.getDouble("purchase_price"));
+                product.setRetailPrice(resultSet.getDouble("retail_price"));
+                availableProducts.add(product);
+
+            }
+            return availableProducts;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void recordPurchase(PurchaseHistory purchaseHistory){
+        try {
+            String sql = "INSERT INTO purchase_history (customer_email, product_name, amount_sold, purchase_price, retail_price, total) VALUES (?,?,?,?,?,?)";
+
+            Connection dbConnection = getConnection();
+
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, purchaseHistory.getCustomerEmail());
+            preparedStatement.setString(2, purchaseHistory.getProductName());
+            preparedStatement.setDouble(3, purchaseHistory.getAmountSold());
+            preparedStatement.setDouble(4, purchaseHistory.getPurchasePrice());
+            preparedStatement.setDouble(5, purchaseHistory.getRetailPrice());
+            preparedStatement.setDouble(6, purchaseHistory.getTotal());
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 
